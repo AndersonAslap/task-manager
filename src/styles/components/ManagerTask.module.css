@@ -1,0 +1,11 @@
+.managerTaskCardContainer, .managerTaskGridTable{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.managerTaskGridTable > div {
+    margin-top: 5rem;;
+}

@@ -1,15 +1,30 @@
-import React from 'react';
-import { useRoutes } from 'hookrouter';
+import {
+    Container,
+    Grid
+} from '@material-ui/core';
+
+
 import { CreateTask } from './CreateTask';
-import { EditTask } from './EditTask';
 import { TaskList } from './TaskList';
 
-const routes = {
-    '/' : () => <TaskList />,
-    '/create' : () => <CreateTask />,
-    '/edit/:id' : ({id}) => <EditTask id={id} />
-}
+import styles from '../styles/components/ManagerTask.module.css';
 
 export function ManagerTask() {
-    return useRoutes(routes);
+    return ( 
+        <Container maxWidth="md" className={styles.managerTaskContainer}>
+            
+            <Grid container>
+                <Grid item xs={4}>
+                    <CreateTask />
+                </Grid>
+
+                <Grid item xs={8} className={styles.managerTaskGridTable}>
+                    <div>
+                        <TaskList />
+                    </div>          
+                </Grid>
+            </Grid>
+
+        </Container>
+    );
 }
