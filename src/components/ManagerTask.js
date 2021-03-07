@@ -13,15 +13,15 @@ export function ManagerTask() {
     return ( 
         <Container maxWidth="md" className={styles.managerTaskContainer}>
             
-            <Grid container>
-                <Grid item xs={4}>
+            <Grid container className={styles.manageTasksItemsContainer}>
+                <Grid item xs={4} >
                     <CreateTask />
                 </Grid>
 
-                <Grid item xs={8} className={styles.managerTaskGridTable}>
-                    <div>
-                        <TaskList />
-                    </div>          
+                <Grid item xs={1}>&nbsp;  </Grid>
+                
+                <Grid item xs={7}>
+                    <TaskList />  
                 </Grid>
             </Grid>
 

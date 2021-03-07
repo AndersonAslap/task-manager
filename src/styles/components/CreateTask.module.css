@@ -1,3 +1,7 @@
-.createTaskCardContainer {
-    margin-top: 5rem;
+.createTaskCardContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }

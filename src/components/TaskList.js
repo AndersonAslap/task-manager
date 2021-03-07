@@ -1,41 +1,36 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  FormControl,
+  InputLabel,
+  InputAdornment,
+  OutlinedInput
+} from '@material-ui/core';
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
+import {
+  AssignmentTurnedIn,
+  Edit,
+  Delete,
+  Search,
+  ArrowBack,
+  ArrowForward
+} from '@material-ui/icons';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
 
 const rows = [
-  createData('Frozen yoghurt', 159),
-  createData('Ice cream sandwich', 237),
-  createData('Eclair', 262),
-  createData('Cupcake', 305),
-  createData('Gingerbread', 356),
+  {name:'Tarefa 1'},
+  {name:'Tarefa 2'},
+  {name:'Tarefa 3'},
+  {name:'Tarefa 4'}
 ];
 
 const useStyles = makeStyles({
@@ -52,19 +47,63 @@ export function TaskList() {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
+            <TableCell colSpan="2" style={{background:'#000', color:'white'}}>Tarefas</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-            </StyledTableRow>
+          <TableRow>
+            <TableCell colSpan="2" align="center">
+              <FormControl variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Pesquisar</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <Search color="primary" />
+                    </InputAdornment>
+                  }
+                  labelWidth={70}
+                />
+              </FormControl>
+            </TableCell>
+          </TableRow>
+          
+          {rows.map((task) => (
+            <TableRow key={task.name}>
+              <TableCell component="th" scope="row">
+                {task.name}
+              </TableCell>
+              <TableCell align="right">
+                <IconButton>
+                  <AssignmentTurnedIn style={{ color: 'rgb(76, 175, 80)' }} />
+                </IconButton>
+                
+                <IconButton>
+                  <Edit  style={{ color: '#FFFF00' }} />
+                </IconButton>
+                
+                <IconButton>
+                  <Delete color="secondary" />
+                </IconButton>
+              </TableCell>
+            </TableRow>
           ))}
+
+          <TableRow>
+            <TableCell colSpan="2" align="center">
+             
+              <ArrowBack color="primary"/>
+              &nbsp; &nbsp;
+              <span >
+              1 &nbsp; 2 &nbsp; 3&nbsp; 4
+              </span>
+              &nbsp; &nbsp;
+              <ArrowForward color="primary"/>
+              
+            </TableCell>
+          </TableRow>
+        
         </TableBody>
       </Table>
     </TableContainer>
