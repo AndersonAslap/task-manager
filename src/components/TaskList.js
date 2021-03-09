@@ -55,6 +55,7 @@ export function TaskList() {
             <TableCell colSpan="2" align="center">
               <FormControl variant="outlined">
                 <InputLabel htmlFor="outlined-adornment-password">Pesquisar</InputLabel>
+                
                 <OutlinedInput
                   id="outlined-adornment-password"
                 
@@ -63,8 +64,10 @@ export function TaskList() {
                       <Search color="primary" />
                     </InputAdornment>
                   }
+                  
                   labelWidth={70}
                 />
+              
               </FormControl>
             </TableCell>
           </TableRow>
