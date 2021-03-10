@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Routes } from './components/Routes';
-
-import './styles/globals.css';
+import { ManagerTask } from './components/ManagerTask';
 
 ReactDOM.render(
-  <Routes />,
+  <ManagerTask />,
   document.getElementById('root')
 );
 
