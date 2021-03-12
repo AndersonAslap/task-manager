@@ -9,6 +9,8 @@ import {
     Modal
 } from 'react-bootstrap';
 
+import { Task } from '../models/Task.model';
+
 export function CreateTask() {
 
     const [task, setTask] = useState('');
@@ -21,7 +23,20 @@ export function CreateTask() {
     }
 
     function handleCreateTask(event) {
+        
         event.preventDefault();
+        setIsValidated(true);
+
+        if (event.currentTarget.checkValidity() === true) {
+
+            const tasksDB = localStorage['tasks'];
+            const tasks = tasksDB ? JSON.parse(tasksDB) : [] ;
+
+            tasks.push(new Task(new Date().getTime(), task, false));
+            localStorage['tasks'] = JSON.stringify(tasks)
+            setIsShowModal(true);
+        }
+
     }
 
     function handleModal() {
@@ -34,8 +49,8 @@ export function CreateTask() {
             <h3 className="text-center">Cadastar</h3>
             
             <Jumbotron>
-                <form 
-                    noValidate={isValidated} 
+                <Form
+                    validated={isValidated}
                     noValidate 
                     onSubmit={handleCreateTask}
                 >
@@ -50,6 +65,7 @@ export function CreateTask() {
                             required 
                             value={task}
                             onChange={handleTask}
+                            data-testid = "txt-task"
                         />
 
                         <Form.Control.Feedback type="invalid">
@@ -60,7 +76,8 @@ export function CreateTask() {
                     <Form.Group className="text-center">
                         <Button 
                             variant="success"
-                            type="submit"   
+                            type="submit" 
+                            data-testid = "btn-create-task"  
                         >Cadastrar
                         </Button>
 
@@ -68,9 +85,9 @@ export function CreateTask() {
 
                        <A href="/" className="btn btn-info">Voltar</A>
                     </Form.Group>
-                </form>
+                </Form>
 
-                <Modal show={isShowModal} onHide={handleModal}>
+                <Modal show={isShowModal} onHide={handleModal} data-testid="modal">
                     <Modal.Header closeButton>
                         <Modal.Title>Sucesso</Modal.Title>
                     </Modal.Header>
