@@ -8,6 +8,7 @@ import {
     faEdit
 } from '@fortawesome/free-solid-svg-icons';
 
+import { CompletedTask } from './CompletedTask';
 
 export function ItensTask(props) {
 
@@ -27,8 +28,17 @@ export function ItensTask(props) {
                 </td>
 
                 <td className="text-right">
+                    
+                    <CompletedTask 
+                        task={task}  
+                        loadTasks={props.loadTasks}
+                        className={ task.completed ? 'hidden' : null }
+                    />
+
+                    &nbsp;
+                    
                     <A href={"/atualizar/"+task.id}
-                       className={ task.completed ? 'hidden' : 'btn btn-sm btn-warning'}> 
+                       className={ task.completed ? 'hidden' : 'btn btn-sm btn-warning' }> 
                         <FontAwesomeIcon icon={faEdit} />
                     </A>
                 </td>
