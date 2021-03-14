@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faPlus
 } from '@fortawesome/free-solid-svg-icons'
+
 import { ItensTask } from './ItensTask';
 
 export function ListTask() {
@@ -33,7 +34,7 @@ export function ListTask() {
     }, [loadTasks]);
 
     return (
-        <div className="text-center">
+        <div className="text-center container">
             <h3>Tarefas a fazer</h3>
             <Table striped bordered hover responsive data-testid="table-tasks">
                 <thead>
