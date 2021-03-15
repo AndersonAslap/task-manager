@@ -34,14 +34,14 @@ export function RemoveTask(props) {
     return (
         <>
             <Button 
-                data-testid="btn-remove-task"
+                data-testid="btn-open-modal"
                 className="btn btn-sm btn-danger"
                 onClick={handleOpenModal}
             >
                 <FontAwesomeIcon icon={faTrash} />
             </Button>
 
-            <Modal show={isShowModal} onHide={handleClosedModal}>
+            <Modal show={isShowModal} onHide={handleClosedModal} data-testid='modal'>
                 <Modal.Header closeButton>
                     <Modal.Title>Remover tarefa</Modal.Title>
                 </Modal.Header>
