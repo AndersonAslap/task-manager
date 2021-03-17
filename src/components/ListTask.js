@@ -24,11 +24,21 @@ export function ListTask() {
     const [amountItens, setAmountItens] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
 
+    const [isOrderAsc, setIsOrderAsc] = useState(false);
+    const [isOrderDesc, setIsOrderDesc] = useState(false);
+
     useEffect(() => {
 
         function getTasks() {
             const tasksDB = localStorage['tasks'];
             let tasksList = tasksDB ? JSON.parse(tasksDB) : [] ;
+            
+            if (isOrderAsc) {
+                tasksList.sort((task1, task2) => (task1.name.toLowerCase() > task2.name.toLowerCase()) ? 1 : -1 );
+            } else if (isOrderDesc) {
+                tasksList.sort((task1, task2) => (task1.name.toLowerCase() < task2.name.toLowerCase()) ? 1 : -1 );
+            }
+            
             setAmountItens(tasksList.length);
             setTasks(tasksList.splice((currentPage - 1) * ITENS_PAGES, ITENS_PAGES));
         }
@@ -38,10 +48,27 @@ export function ListTask() {
             setLoadTasks(false);
         }
            
-    }, [loadTasks, currentPage]);
+    }, [loadTasks, currentPage, isOrderAsc, isOrderDesc]);
 
     function handleChangePage(page) {
         setCurrentPage(page);
+        setLoadTasks(true);
+    }
+
+    function handleOrderBy(event) {
+        event.preventDefault();
+
+        if (!isOrderAsc && !isOrderDesc) {
+            setIsOrderAsc(true);
+            setIsOrderDesc(false);
+        } else if (isOrderAsc) {
+            setIsOrderAsc(false);
+            setIsOrderDesc(true);
+        } else {
+            setIsOrderAsc(false);
+            setIsOrderDesc(false);
+        }
+
         setLoadTasks(true);
     }
 
@@ -51,7 +78,13 @@ export function ListTask() {
             <Table striped bordered hover responsive data-testid="table-tasks">
                 <thead>
                     <tr>
-                        <th>Tarefa</th>
+                        <th>
+                            <a href="/" onClick={handleOrderBy}>
+                                Tarefa
+                            </a>
+                        
+                        </th>
+                        
                         <th>
                             <A 
                                 href="/cadastrar" 
