@@ -77,7 +77,7 @@ export function PaginationComponent(props) {
 
     return (
         <Pagination data-testid="pagination">
-            {handleGetPagination}
+            {handleGetPagination()}
         </Pagination>
     );
 }
