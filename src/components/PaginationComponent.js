@@ -53,9 +53,7 @@ export function PaginationComponent(props) {
                 key="pageLast"
                 onClick={() => props.changePage(numberPages)}
                 disabled={props.changePage === numberPages}
-            >
-
-            </Pagination.Last>
+            />
         );
     }
 

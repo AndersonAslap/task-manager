@@ -12,18 +12,25 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import { ItensTask } from './ItensTask';
+import { PaginationComponent } from './PaginationComponent';
 
 export function ListTask() {
 
+    const ITENS_PAGES = 3;
+
     const [tasks, setTasks] = useState([]);
     const [loadTasks, setLoadTasks] = useState(true);
+
+    const [amountItens, setAmountItens] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
 
         function getTasks() {
             const tasksDB = localStorage['tasks'];
             let tasksList = tasksDB ? JSON.parse(tasksDB) : [] ;
-            setTasks(tasksList);
+            setAmountItens(tasksList.length);
+            setTasks(tasksList.splice((currentPage - 1) * ITENS_PAGES, ITENS_PAGES));
         }
 
         if (loadTasks) {
@@ -31,7 +38,12 @@ export function ListTask() {
             setLoadTasks(false);
         }
            
-    }, [loadTasks]);
+    }, [loadTasks, currentPage]);
+
+    function handleChangePage(page) {
+        setCurrentPage(page);
+        setLoadTasks(true);
+    }
 
     return (
         <div className="text-center container">
@@ -60,6 +72,12 @@ export function ListTask() {
                     />
                 </tbody>
             </Table>
+            <PaginationComponent 
+                amountItems={amountItens}
+                itemsPages={ITENS_PAGES}
+                currentPage={currentPage}
+                changePage={handleChangePage}
+            />
         </div>
     );
 }
