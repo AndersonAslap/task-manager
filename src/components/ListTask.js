@@ -13,6 +13,7 @@ import {
 
 import { ItensTask } from './ItensTask';
 import { PaginationComponent } from './PaginationComponent';
+import { Ordernation } from '../components/Ordernation';
 
 export function ListTask() {
 
@@ -81,6 +82,11 @@ export function ListTask() {
                         <th>
                             <a href="/" onClick={handleOrderBy}>
                                 Tarefa
+                                &nbsp;
+                                <Ordernation 
+                                    orderAsc={isOrderAsc}
+                                    orderDesc={isOrderDesc}
+                                />
                             </a>
                         
                         </th>
