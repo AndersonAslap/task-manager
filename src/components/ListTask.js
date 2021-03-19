@@ -38,6 +38,10 @@ export function ListTask() {
         function getTasks() {
             const tasksDB = localStorage['tasks'];
             let tasksList = tasksDB ? JSON.parse(tasksDB) : [] ;
+
+            tasksList = tasksList.filter(
+                task => task.name.toLowerCase().indexOf(filterTask.toLowerCase()) === 0
+            );
             
             if (isOrderAsc) {
                 tasksList.sort((task1, task2) => (task1.name.toLowerCase() > task2.name.toLowerCase()) ? 1 : -1 );
