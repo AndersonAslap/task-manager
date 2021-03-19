@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { A } from 'hookrouter';
 
 import {
-    Table
+    Table,
+    Form
 } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +15,8 @@ import {
 import { ItensTask } from './ItensTask';
 import { PaginationComponent } from './PaginationComponent';
 import { Ordernation } from '../components/Ordernation';
+
+import  '../styles/ListTask.module.css';
 
 export function ListTask() {
 
@@ -27,6 +30,8 @@ export function ListTask() {
 
     const [isOrderAsc, setIsOrderAsc] = useState(false);
     const [isOrderDesc, setIsOrderDesc] = useState(false);
+
+    const [filterTask, setFilterTask] = useState('');
 
     useEffect(() => {
 
@@ -73,6 +78,11 @@ export function ListTask() {
         setLoadTasks(true);
     }
 
+    function handleFilter(event) {
+        setFilterTask(event.target.value);
+        setLoadTasks(true);
+    }
+
     return (
         <div className="text-center container">
             <h3>Tarefas a fazer</h3>
@@ -101,6 +111,18 @@ export function ListTask() {
                                 Nova tarefa
                             </A>
                         </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <Form.Control 
+                                type="text" 
+                                value={filterTask}
+                                onChange={handleFilter}
+                                data-testid="field-search"
+                                className="fieldSearch"
+                            />
+                        </th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
 
