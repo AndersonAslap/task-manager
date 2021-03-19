@@ -58,7 +58,7 @@ export function ListTask() {
             setLoadTasks(false);
         }
            
-    }, [loadTasks, currentPage, isOrderAsc, isOrderDesc]);
+    }, [loadTasks, currentPage, isOrderAsc, isOrderDesc, filterTask]);
 
     function handleChangePage(page) {
         setCurrentPage(page);
