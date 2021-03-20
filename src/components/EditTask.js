@@ -94,7 +94,7 @@ export function EditTask(props) {
                     </Form.Group>
 
                     <Form.Group className="text-center">
-                        <Button type="submit" data-testid="edit-task" variant="success">
+                        <Button type="submit" data-testid="btn-update-task" variant="success">
                             Sim
                         </Button>
                         &nbsp;
@@ -104,7 +104,7 @@ export function EditTask(props) {
                 </Form>
 
 
-                <Modal show={isShowModal} onHide={handleClosedModal}>
+                <Modal show={isShowModal} data-testid="modal">
                     <Modal.Header>
                         <Modal.Title>Sucesso</Modal.Title>
                     </Modal.Header>
