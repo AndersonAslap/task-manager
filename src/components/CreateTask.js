@@ -11,30 +11,39 @@ import {
 
 import { Task } from '../models/Task.model';
 
+import axios from 'axios';
+
 export function CreateTask() {
+
+    const API_URL = 'http://localhost:3001/gerenciador-tarefas/';
 
     const [task, setTask] = useState('');
 
     const [isValidated, setIsValidated] = useState(false);
     const [isShowModal, setIsShowModal] = useState(false);
+    const [isShowModalError, setIsShowModalError] = useState(false);
 
     function handleTask(event) {
         setTask(event.target.value);
     }
 
-    function handleCreateTask(event) {
+    async function handleCreateTask(event) {
         
         event.preventDefault();
         setIsValidated(true);
 
         if (event.currentTarget.checkValidity() === true) {
 
-            const tasksDB = localStorage['tasks'];
-            const tasks = tasksDB ? JSON.parse(tasksDB) : [] ;
+            try {
 
-            tasks.push(new Task(new Date().getTime(), task, false));
-            localStorage['tasks'] = JSON.stringify(tasks)
-            setIsShowModal(true);
+                const newTask = new Task(null, task, false);
+
+                await axios.post(API_URL, newTask);
+                setIsShowModal(true);
+
+            } catch (erro) {
+                setIsShowModalError(true);
+            }
         }
 
     }
@@ -42,6 +51,10 @@ export function CreateTask() {
     function handleModal() {
         setIsShowModal(false); 
         navigate("/");
+    }
+
+    function handleModalError() {
+        setIsShowModalError(false);
     }
 
     return (
@@ -98,6 +111,21 @@ export function CreateTask() {
                     
                     <Modal.Footer>
                         <Button variant="success" onClick={handleModal}>Continuar</Button>
+                    </Modal.Footer>
+                </Modal>
+
+
+                <Modal show={isShowModalError} onHide={handleModalError} data-testid="modal-error">
+                    <Modal.Header closeButton>
+                        <Modal.Title>Error</Modal.Title>
+                    </Modal.Header>
+                    
+                    <Modal.Body>
+                        Erro ao adicionar tarefa, tente novamente em instantes.
+                    </Modal.Body>
+                    
+                    <Modal.Footer>
+                        <Button variant="warning" onClick={handleModalError}>Fechar</Button>
                     </Modal.Footer>
                 </Modal>
             </Jumbotron>

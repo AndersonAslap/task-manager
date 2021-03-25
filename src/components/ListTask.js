@@ -18,9 +18,12 @@ import { Ordernation } from '../components/Ordernation';
 
 import  '../styles/ListTask.module.css';
 
+import axios from 'axios';
+
 export function ListTask() {
 
     const ITENS_PAGES = 3;
+    const API_URL = 'http://localhost:3001/gerenciador-tarefas';
 
     const [tasks, setTasks] = useState([]);
     const [loadTasks, setLoadTasks] = useState(true);
@@ -35,22 +38,26 @@ export function ListTask() {
 
     useEffect(() => {
 
-        function getTasks() {
-            const tasksDB = localStorage['tasks'];
-            let tasksList = tasksDB ? JSON.parse(tasksDB) : [] ;
+        async function getTasks() {
 
-            tasksList = tasksList.filter(
-                task => task.name.toLowerCase().indexOf(filterTask.toLowerCase()) === 0
-            );
-            
+            let order = '';
+
             if (isOrderAsc) {
-                tasksList.sort((task1, task2) => (task1.name.toLowerCase() > task2.name.toLowerCase()) ? 1 : -1 );
+                order = 'ASC';
             } else if (isOrderDesc) {
-                tasksList.sort((task1, task2) => (task1.name.toLowerCase() < task2.name.toLowerCase()) ? 1 : -1 );
+                order = 'DESC'
             }
-            
-            setAmountItens(tasksList.length);
-            setTasks(tasksList.splice((currentPage - 1) * ITENS_PAGES, ITENS_PAGES));
+
+            try {
+                const params = `?page=${currentPage}&order=${order}&filter-task=${filterTask}`;
+
+                let { data } = await axios.get(API_URL + params);
+                
+                setAmountItens(data.amountItems);
+                setTasks(data.tasks);
+            } catch(erro) {
+                setTasks([]);
+            }   
         }
 
         if (loadTasks) {
