@@ -6,7 +6,7 @@ import { PaginationComponent } from '../components/PaginationComponent';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-describe('Teste do componete de Paginação', () => {
+describe.skip('Teste do componete de Paginação', () => {
 
     it('Deve renderizar o componente sem erros.', () => {
         const div = document.createElement('div');

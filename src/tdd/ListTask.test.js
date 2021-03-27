@@ -8,7 +8,7 @@ import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 
-describe('Teste do componente Listar tarefa.', () => {
+describe.skip('Teste do componente Listar tarefa.', () => {
 
     const task1 = 'Primeira tarefa';
     const task2 = 'Segunda tarefa';
