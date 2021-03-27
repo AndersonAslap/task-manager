@@ -9,26 +9,38 @@ import {
     Modal
 } from 'react-bootstrap';
 
+import axios from 'axios';
+
+import { Task } from '../models/Task.model';
+
 export function EditTask(props) {
+
+    const API_URL = 'http://localhost:3001/gerenciador-tarefas/';
 
     const [task, setTask] = useState();
     const [isShowModal, setIsShowModal] = useState(false);
+    const [isShowModalError, setIsShowModalError] = useState(false);
     const [isFormValidated, setIsFormValidated] = useState(false);
 
     const [isLoadTask, setIsLoadTask] = useState(true);
 
     useEffect(() => {
 
+        async function getTask() {
+            try {
+
+                let { data } = await axios.get(API_URL + props.id);
+                setTask(data.name);
+
+            } catch(erro) {
+                alert(erro);
+            }
+        }
+
         if (isLoadTask) {
 
-            const tasksDB = localStorage['tasks'];
-            const tasks = tasksDB ? JSON.parse(tasksDB) : [] ;
-
-            const currentTask = tasks.filter(
-                task => task.id === parseInt(props.id)
-            )[0];
+            getTask();
             
-            setTask(currentTask.name);
             setIsLoadTask(false);
         }
 
@@ -47,28 +59,27 @@ export function EditTask(props) {
         navigate("/");
     }
 
-    function handleUpdate(event) {
+    async function handleUpdate(event) {
         event.preventDefault();
         setIsFormValidated(true);
 
         if (event.currentTarget.checkValidity() === true) {
+            try {
+                
+                const taskUpdate = new Task(null, task, false);
+                await axios.put(API_URL + props.id, taskUpdate);
+                setIsShowModal(true);
 
-            const tasksDB = localStorage['tasks'];
-            let tasks = tasksDB ? JSON.parse(tasksDB) : [] ;
-
-            tasks = tasks.map(taskObj => {
-                if(taskObj.id === parseInt(props.id)) {
-                    taskObj.name = task;
-                }
-
-                return taskObj;
-            });
-
-            localStorage['tasks'] = JSON.stringify(tasks);
-
-            setIsShowModal(true);
+            } catch(erro) {
+                setIsShowModalError(true);
+            }
+           
         }
 
+    }
+
+    function handleClosedModalError() {
+        setIsShowModalError(false);
     }
 
     return (
@@ -116,6 +127,22 @@ export function EditTask(props) {
                     <Modal.Footer>
                         <Button variant="success" onClick={handleClosedModal}>
                             Continuar
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={isShowModalError} data-testid="modal-error">
+                    <Modal.Header>
+                        <Modal.Title>Erro</Modal.Title>
+                    </Modal.Header>
+                    
+                    <Modal.Body>
+                        Atenção : ocorreu um erro ao atualizar a tarefa, tentar novamente em instantes
+                    </Modal.Body>
+                        
+                    <Modal.Footer>
+                        <Button variant="warning" onClick={handleClosedModalError}>
+                            Fechar
                         </Button>
                     </Modal.Footer>
                 </Modal>

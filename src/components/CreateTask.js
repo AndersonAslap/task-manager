@@ -36,7 +36,7 @@ export function CreateTask() {
 
             try {
 
-                const newTask = new Task(null, task, false);
+                const newTask = new Task (null, task, false);
 
                 await axios.post(API_URL, newTask);
                 setIsShowModal(true);

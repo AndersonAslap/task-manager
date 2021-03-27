@@ -9,9 +9,14 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
 
+import axios from 'axios';
+
 export function CompletedTask(props) {
 
+    const API_URL = 'http://localhost:3001/gerenciador-tarefas/:id/concluir';
+
     const [isShowModal, setIsShowModal] = useState(false);
+    const [isShowModalError, setIsShowModalError] = useState(false);
 
     function handleOpenModal(event) {
         event.preventDefault();
@@ -22,23 +27,24 @@ export function CompletedTask(props) {
         setIsShowModal(false);
     }
 
-    function handleCompletedTask(event) {
+    function handleModalError() {
+        setIsShowModalError(false);
+    }
+
+    async function handleCompletedTask(event) {
         event.preventDefault();
 
-        const tasksDB = localStorage['tasks'];
-        const tasks = tasksDB ? JSON.parse(tasksDB) : [] ;
+        try {
 
-        tasks.map(task => {
-            if(task.id === props.task.id) {
-                task.completed = true;
-            }
+            await axios.put(API_URL.replace(':id', props.task.id));
+            handleClosedModal();
+            props.loadTasks(true);
 
-            return task;
-        })
-
-        localStorage['tasks'] = JSON.stringify(tasks);
-        handleClosedModal();
-        props.loadTasks(true);
+        } catch(error) {
+            setIsShowModal(false);
+            setIsShowModalError(true);
+        }
+        
     }
 
     return (
@@ -85,6 +91,20 @@ export function CompletedTask(props) {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            <Modal show={isShowModalError} onHide={handleModalError} data-testid="modal-error">
+                    <Modal.Header closeButton>
+                        <Modal.Title>Error</Modal.Title>
+                    </Modal.Header>
+                    
+                    <Modal.Body>
+                        Erro ao concluir tarefa, tente novamente em instantes.
+                    </Modal.Body>
+                    
+                    <Modal.Footer>
+                        <Button variant="warning" onClick={handleModalError}>Fechar</Button>
+                    </Modal.Footer>
+                </Modal>
         </>
     );
 }

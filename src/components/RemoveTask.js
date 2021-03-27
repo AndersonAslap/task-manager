@@ -8,27 +8,37 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
+import axios from 'axios';
+
 export function RemoveTask(props) {
 
+    const API_URL = 'http://localhost:3001/gerenciador-tarefas/';
+
     const [isShowModal, setIsShowModal] = useState(false);
+    const [isShowModalError, setIsShowModalError] = useState(false);
 
     function handleClosedModal() {
         setIsShowModal(false);
+    }
+
+    function handleClosedModalError() {
+        setIsShowModalError(false);
     }
 
     function handleOpenModal() {
         setIsShowModal(true);
     }
 
-    function handleRemoveTask() {
-        const tasksDB = localStorage['tasks'];
-        let tasks = tasksDB ? JSON.parse(tasksDB) : [];
-
-        tasks = tasks.filter((task) => { return task.id !== props.task.id } );
-
-        localStorage['tasks'] = JSON.stringify(tasks);
-
-        props.loadTasks(true);
+    async function handleRemoveTask() {
+        
+        try {
+            await axios.delete(API_URL + props.task.id);
+            setIsShowModal(false);
+            props.loadTasks(true);
+        } catch(erro) {
+            setIsShowModal(false);
+            setIsShowModalError(true);
+        }
     }
 
     return (
@@ -63,6 +73,23 @@ export function RemoveTask(props) {
                         className="btn btn-sm btn-info"
                         onClick={handleClosedModal}
                     >Não</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={isShowModalError} onHide={handleClosedModalError} data-testid='modal-error'>
+                <Modal.Header closeButton>
+                    <Modal.Title>Erro</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                   Atenção: ocorreu um erro ao remover a tarefa
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button
+                        variant="warning"
+                        onClick={handleClosedModalError}
+                    >Fechar</Button>
                 </Modal.Footer>
             </Modal>
         </>
